@@ -42,7 +42,9 @@ bool Publisher::write(
         void* Data)
 {
     logInfo(PUBLISHER, "Writing new data");
-    return mp_impl->create_new_change(ALIVE, Data);
+    eprosima::fastrtps::Time_t sourceTimestamp;
+    eprosima::fastrtps::Time_t::now(sourceTimestamp);
+    return mp_impl->create_new_change(ALIVE, Data, sourceTimestamp);
 }
 
 bool Publisher::write(
@@ -50,7 +52,9 @@ bool Publisher::write(
         WriteParams& wparams)
 {
     logInfo(PUBLISHER, "Writing new data with WriteParams");
-    return mp_impl->create_new_change_with_params(ALIVE, Data, wparams);
+    eprosima::fastrtps::Time_t sourceTimestamp;
+    eprosima::fastrtps::Time_t::now(sourceTimestamp);
+    return mp_impl->create_new_change_with_params(ALIVE, Data, wparams, sourceTimestamp);
 }
 
 rtps::InstanceHandle_t Publisher::register_instance(

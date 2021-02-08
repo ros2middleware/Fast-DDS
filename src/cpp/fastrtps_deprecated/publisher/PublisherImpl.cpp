@@ -116,16 +116,18 @@ PublisherImpl::~PublisherImpl()
 
 bool PublisherImpl::create_new_change(
         ChangeKind_t changeKind,
-        void* data)
+        void* data,
+        eprosima::fastrtps::Time_t &sourceTimestamp)
 {
     WriteParams wparams;
-    return create_new_change_with_params(changeKind, data, wparams);
+    return create_new_change_with_params(changeKind, data, wparams, sourceTimestamp);
 }
 
 bool PublisherImpl::create_new_change_with_params(
         ChangeKind_t changeKind,
         void* data,
-        WriteParams& wparams)
+        WriteParams& wparams,
+        eprosima::fastrtps::Time_t& sourceTimestamp)
 {
     InstanceHandle_t handle;
     if (m_att.topic.topicKind == WITH_KEY)
@@ -137,14 +139,15 @@ bool PublisherImpl::create_new_change_with_params(
         mp_type->getKey(data, &handle, is_key_protected);
     }
 
-    return create_new_change_with_params(changeKind, data, wparams, handle);
+    return create_new_change_with_params(changeKind, data, wparams, handle, sourceTimestamp);
 }
 
 bool PublisherImpl::create_new_change_with_params(
         ChangeKind_t changeKind,
         void* data,
         WriteParams& wparams,
-        const InstanceHandle_t& handle)
+        const InstanceHandle_t& handle,
+        eprosima::fastrtps::Time_t& sourceTimestamp)
 {
     /// Preconditions
     if (data == nullptr)
@@ -175,6 +178,7 @@ bool PublisherImpl::create_new_change_with_params(
 #endif // if HAVE_STRICT_REALTIME
     {
         CacheChange_t* ch = mp_writer->new_change(mp_type->getSerializedSizeProvider(data), changeKind, handle);
+        ch->sourceTimestamp = sourceTimestamp;
         if (ch != nullptr)
         {
             if (changeKind == ALIVE)
@@ -354,7 +358,8 @@ bool PublisherImpl::unregister_instance(
     {
         WriteParams wparams;
         ChangeKind_t change_kind = dispose ? NOT_ALIVE_DISPOSED : NOT_ALIVE_UNREGISTERED;
-        returned_value = create_new_change_with_params(change_kind, instance, wparams, ih);
+        eprosima::fastrtps::Time_t sourceTimestamp;
+        returned_value = create_new_change_with_params(change_kind, instance, wparams, ih, sourceTimestamp);
     }
 
     return returned_value;

@@ -80,7 +80,8 @@ public:
      */
     bool create_new_change(
             rtps::ChangeKind_t kind,
-            void* Data);
+            void* Data,
+            eprosima::fastrtps::Time_t &sourceTimestamp);
 
     /**
      *
@@ -92,13 +93,15 @@ public:
     bool create_new_change_with_params(
             rtps::ChangeKind_t kind,
             void* Data,
-            rtps::WriteParams& wparams);
+            rtps::WriteParams& wparams,
+            eprosima::fastrtps::Time_t &sourceTimetamp);
 
     bool create_new_change_with_params(
             rtps::ChangeKind_t kind,
             void* Data,
             rtps::WriteParams& wparams,
-            const rtps::InstanceHandle_t& handle);
+            const rtps::InstanceHandle_t& handle,
+            eprosima::fastrtps::Time_t &sourceTimestamp);
 
     /*!
      * @brief Implementation of the DDS `register_instance` operation.

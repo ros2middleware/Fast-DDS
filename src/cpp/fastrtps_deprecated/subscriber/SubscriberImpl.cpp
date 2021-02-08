@@ -265,6 +265,9 @@ void SubscriberImpl::SubscriberReaderListener::onNewCacheChangeAdded(
         if (mp_subscriberImpl->mp_listener != nullptr)
         {
             //cout << "FIRST BYTE: "<< (int)change->serializedPayload.data[0] << endl;
+          auto receptionTimestampPtr = const_cast<eprosima::fastrtps::rtps::Time_t *>(
+              &change_in->receptionTimestamp);
+          eprosima::fastrtps::rtps::Time_t::now(*receptionTimestampPtr);
             mp_subscriberImpl->mp_listener->onNewDataMessage(mp_subscriberImpl->mp_userSubscriber);
         }
     }
