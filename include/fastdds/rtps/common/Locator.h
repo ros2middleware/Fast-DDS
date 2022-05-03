@@ -37,18 +37,28 @@ namespace eprosima {
 namespace fastrtps {
 namespace rtps {
 
+//! Initialize locator with invalid values
 #define LOCATOR_INVALID(loc)  {loc.kind = LOCATOR_KIND_INVALID; loc.port = LOCATOR_PORT_INVALID; \
                                LOCATOR_ADDRESS_INVALID(loc.address); \
 }
+//! Invalid locator kind -1
 #define LOCATOR_KIND_INVALID -1
 
+//! Set locator IP address to 0
 #define LOCATOR_ADDRESS_INVALID(a) {std::memset(a, 0x00, 16 * sizeof(octet));}
+//! Invalid locator port 0
 #define LOCATOR_PORT_INVALID 0
+//! Reserved locator kind 0
 #define LOCATOR_KIND_RESERVED 0
+//! UDPv4 locator kind 1
 #define LOCATOR_KIND_UDPv4 1
+//! UDPv6 locator kind 2
 #define LOCATOR_KIND_UDPv6 2
+//! TCPv4 locator kind 4
 #define LOCATOR_KIND_TCPv4 4
+//! TCPv6 locator kind 8
 #define LOCATOR_KIND_TCPv6 8
+//! Shared memory (SHM) locator kind 16
 #define LOCATOR_KIND_SHM 16
 
 //!@brief Class Locator_t, uniquely identifies a communication channel for a particular transport.
